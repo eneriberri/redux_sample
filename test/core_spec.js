@@ -1,7 +1,7 @@
 import {List, Map} from 'immutable';
 import {expect} from 'chai';
 
-import {setEntries, next} from '../src/core';
+import {setEntries, next, vote} from '../src/core';
 
 describe('application logic', () => {
 
@@ -33,5 +33,52 @@ describe('application logic', () => {
     });
 
   });
-  
+
+  describe('vote', () => {
+
+    it('creates a tally for the voted entry', () => {
+      const state = Map({
+        vote: Map({
+          pair: List.of('Spirited Away', 'Princess Mononoke')
+        }),
+        entries: List()
+      });
+      const nextState = vote(state, 'Princess Mononoke');
+      expect(nextState).to.equal(Map({
+        vote: Map({
+          pair: List.of('Spirited Away', 'Princess Mononoke'),
+          tally: Map({
+            'Princess Mononoke': 1
+          })
+        }),
+        entries: List()
+      }));
+    });
+
+    it('adds to existing tally for the voted entry', () => {
+      const state = Map({
+        vote: Map({
+          pair: List.of('Spirited Away', 'Princess Mononoke'),
+          tally: Map({
+            'Spirited Away': 2,
+            'Princess Mononoke': 2
+          })
+        }),
+        entries: List()
+      });
+      const nextState = vote(state, 'Princess Mononoke');
+      expect(nextState).to.equal(Map({
+        vote: Map({
+          pair: List.of('Spirited Away', 'Princess Mononoke'),
+          tally: Map({
+            'Spirited Away': 2,
+            'Princess Mononoke': 3
+          })
+        }),
+        entries: List()
+      }));
+    });
+
+  });
+
 });
