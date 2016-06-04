@@ -32,6 +32,46 @@ describe('application logic', () => {
       }));
     });
 
+    it('puts winner of current vote back to entries', () => {
+      const state = Map({
+        vote: Map({
+          pair: List.of('Spirited Away', 'Princess Mononoke'),
+          tally: Map({
+            'Spirited Away': 3,
+            'Princess Mononoke': 2
+          })
+        }),
+        entries: List.of('Totoro')
+      });
+      const nextState = next(state);
+      expect(nextState).to.equal(Map({
+        vote: Map({
+          pair: List.of('Totoro', 'Spirited Away')
+        }),
+        entries: List()
+      }));
+    });
+
+    it('puts both from tied vote back to entries', () => {
+      const state = Map({
+        vote: Map({
+          pair: List.of('Spirited Away', 'Princess Mononoke'),
+          tally: Map({
+            'Spirited Away': 2,
+            'Princess Mononoke': 2
+          })
+        }),
+        entries: List.of('Totoro')
+      });
+      const nextState = next(state);
+      expect(nextState).to.equal(Map({
+        vote: Map({
+          pair: List.of('Totoro', 'Spirited Away')
+        }),
+        entries: List.of('Princess Mononoke')
+      }));
+    });
+
   });
 
   describe('vote', () => {
