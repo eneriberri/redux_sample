@@ -119,6 +119,23 @@ describe('application logic', () => {
       }));
     });
 
+    it('marks winner when just one entry left', () => {
+      const state = Map({
+        vote: Map({
+          pair: List.of('Spirited Away', 'Princess Mononoke'),
+          tally: Map({
+            'Spirited Away': 4,
+            'Princess Mononoke': 2
+          })
+        }),
+        entries: List()
+      });
+      const nextState = next(state);
+      expect(nextState).to.equal(Map({
+        winner: 'Spirited Away'
+      }));
+    });
+
   });
 
 });
