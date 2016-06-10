@@ -49,4 +49,12 @@ describe('reducer', () => {
     }));
   });
 
+  it('has an initial state', () => {
+    const action = {type: 'SET_ENTRIES', entries: fromJS(['Princess Mononoke'])};
+    const nextState = reducer(undefined, action);
+    expect(nextState).to.equal(fromJS({
+      entries: ['Princess Mononoke']
+    }));
+  });
+
 });
