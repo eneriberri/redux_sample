@@ -77,47 +77,35 @@ describe('application logic', () => {
   describe('vote', () => {
 
     it('creates a tally for the voted entry', () => {
-      const state = Map({
-        vote: Map({
-          pair: List.of('Spirited Away', 'Princess Mononoke')
-        }),
-        entries: List()
-      });
-      const nextState = vote(state, 'Princess Mononoke');
-      expect(nextState).to.equal(Map({
-        vote: Map({
-          pair: List.of('Spirited Away', 'Princess Mononoke'),
-          tally: Map({
-            'Princess Mononoke': 1
-          })
-        }),
-        entries: List()
-      }));
+    const state = Map({
+      pair: List.of('Totoro', 'Spirited Away')
     });
+    const nextState = vote(state, 'Totoro')
+    expect(nextState).to.equal(Map({
+      pair: List.of('Totoro', 'Spirited Away'),
+      tally: Map({
+        'Totoro': 1
+      })
+    }));
+  });
 
-    it('adds to existing tally for the voted entry', () => {
-      const state = Map({
-        vote: Map({
-          pair: List.of('Spirited Away', 'Princess Mononoke'),
-          tally: Map({
-            'Spirited Away': 2,
-            'Princess Mononoke': 2
-          })
-        }),
-        entries: List()
-      });
-      const nextState = vote(state, 'Princess Mononoke');
-      expect(nextState).to.equal(Map({
-        vote: Map({
-          pair: List.of('Spirited Away', 'Princess Mononoke'),
-          tally: Map({
-            'Spirited Away': 2,
-            'Princess Mononoke': 3
-          })
-        }),
-        entries: List()
-      }));
+  it('adds to existing tally for the voted entry', () => {
+    const state = Map({
+      pair: List.of('Totoro', 'Spirited Away'),
+      tally: Map({
+        'Totoro': 3,
+        'Spirited Away': 2
+      })
     });
+    const nextState = vote(state, 'Totoro');
+    expect(nextState).to.equal(Map({
+      pair: List.of('Totoro', 'Spirited Away'),
+      tally: Map({
+        'Totoro': 4,
+        'Spirited Away': 2
+      })
+    }));
+  });
 
     it('marks winner when just one entry left', () => {
       const state = Map({

@@ -57,4 +57,21 @@ describe('reducer', () => {
     }));
   });
 
+
+it('can be used with reduce', () => {
+  const actions = [
+    {type: 'SET_ENTRIES', entries: fromJS(['Princess Mononoke', 'Spirited Away'])},
+    {type: 'NEXT'},
+    {type: 'VOTE', entry: fromJS('Princess Mononoke')},
+    {type: 'VOTE', entry: fromJS('Spirited Away')},
+    {type: 'VOTE', entry: fromJS('Princess Mononoke')},
+    {type: 'NEXT'}
+  ];
+  const finalState = actions.reduce(reducer, Map());
+
+  expect(finalState).to.equal(fromJS({
+    winner: 'Princess Mononoke'
+  }));
+});
+
 });
